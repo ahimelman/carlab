@@ -38,16 +38,17 @@ public final class R {
         public static final int small=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f090009;
+        public static final int action_settings=0x7f09000a;
         public static final int draw_btn=0x7f090001;
-        public static final int drawing=0x7f090004;
+        public static final int drawing=0x7f090005;
         public static final int erase_btn=0x7f090002;
-        public static final int large_brush=0x7f090008;
-        public static final int medium_brush=0x7f090007;
+        public static final int go_btn=0x7f090004;
+        public static final int large_brush=0x7f090009;
+        public static final int medium_brush=0x7f090008;
         public static final int new_btn=0x7f090000;
-        public static final int paint_colors=0x7f090005;
+        public static final int paint_colors=0x7f090006;
         public static final int save_btn=0x7f090003;
-        public static final int small_brush=0x7f090006;
+        public static final int small_brush=0x7f090007;
     }
     public static final class integer {
         public static final int large_size=0x7f050002;
@@ -66,12 +67,13 @@ public final class R {
         public static final int app_name=0x7f060000;
         public static final int brush=0x7f060004;
         public static final int erase=0x7f060005;
+        public static final int go=0x7f060007;
         public static final int hello_world=0x7f060002;
-        public static final int lrg=0x7f06000a;
-        public static final int med=0x7f060009;
-        public static final int paint=0x7f060007;
+        public static final int lrg=0x7f06000b;
+        public static final int med=0x7f06000a;
+        public static final int paint=0x7f060008;
         public static final int save=0x7f060006;
-        public static final int sml=0x7f060008;
+        public static final int sml=0x7f060009;
         public static final int start_new=0x7f060003;
     }
     public static final class style {

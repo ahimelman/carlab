@@ -1,23 +1,22 @@
 package com.example.carlab;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
-
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import java.util.UUID;
-import android.provider.MediaStore;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 public class MainActivity extends Activity implements OnClickListener{
 	
 	private DrawingView drawView;
 	private ImageButton currPaint, drawBtn, eraseBtn, newBtn;
+	private Button goBtn;
 	private float smallBrush, mediumBrush, largeBrush;
 
     @Override
@@ -36,13 +35,16 @@ public class MainActivity extends Activity implements OnClickListener{
         drawBtn = (ImageButton)findViewById(R.id.draw_btn);
         
         drawBtn.setOnClickListener(this);
-        drawView.setBrushSize(mediumBrush);
+        drawView.setBrushSize(smallBrush);
         
         eraseBtn = (ImageButton)findViewById(R.id.erase_btn);
         eraseBtn.setOnClickListener(this);
         
         newBtn = (ImageButton)findViewById(R.id.new_btn);
         newBtn.setOnClickListener(this);
+        
+        goBtn = (Button)findViewById(R.id.go_btn);
+        goBtn.setOnClickListener(this);
     }
 
 
@@ -162,6 +164,9 @@ public class MainActivity extends Activity implements OnClickListener{
     		    }
     		});
     		newDialog.show();
+    	}
+    	else if(view.getId()==R.id.go_btn) {
+    		drawView.goNew();
     	}
     }
     

@@ -39,6 +39,15 @@
             android:layout_height="fill_parent"
             android:contentDescription="@string/save"
             android:src="@drawable/save" />
+
+         
+          <Button
+           	android:id="@+id/go_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/go"
+            android:contentDescription="@string/go" />
+    
     </LinearLayout>
 
     <com.example.carlab.DrawingView
