@@ -1,11 +1,18 @@
 package com.example.carlab;
 
+import java.io.IOException;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +42,7 @@ public class MainActivity extends Activity implements OnClickListener{
         drawBtn = (ImageButton)findViewById(R.id.draw_btn);
         
         drawBtn.setOnClickListener(this);
-        drawView.setBrushSize(smallBrush);
+        drawView.setBrushSize(largeBrush);
         
         eraseBtn = (ImageButton)findViewById(R.id.erase_btn);
         eraseBtn.setOnClickListener(this);

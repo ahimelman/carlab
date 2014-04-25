@@ -1,6 +1,17 @@
 package com.example.carlab;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,6 +28,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class DrawingView extends View {
+	
+	private int WINDOW_SIZE = 20;
 	
 	//drawing path
 	private Path drawPath;
@@ -42,7 +55,27 @@ public class DrawingView extends View {
 	
 	private ArrayList<dPoint> points;
 	
+	private ArrayList<cTurn> turns;
+	
 	private boolean goBool = false;
+	
+	private class cTurn {
+		private int direction;
+		private int duration;
+		
+		private cTurn(int direction, int duration) {
+			this.direction = direction;
+			this.duration = duration;
+		}
+		
+		public String getDir() {
+			return ("" + direction);
+		}
+		
+		public String getDur() {
+			return Integer.toString(duration);
+		}
+	}
 	
 	private class dPoint {
 		private float x;
@@ -51,6 +84,14 @@ public class DrawingView extends View {
 		private dPoint(float x, float y) {
 			this.x = x;
 			this.y = y;
+		}
+		
+		public String gx() {
+			return Float.toString(x);
+		}
+		
+		public String gy() {
+			return Float.toString(y);
 		}
 		
 		@Override
@@ -83,7 +124,38 @@ public class DrawingView extends View {
 	
 	public void goNew() {
 		doCalcs();
+		
+		new Thread() {
+			@Override
+			public void run() {
+				postData();
+			}
+		}.start();
+
 	}
+	
+	public void postData() {
+	    // Create a new HttpClient and Post Header
+	    HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost httppost = new HttpPost("https://agent.electricimp.com/a4f-wesuNciJ?led=0");
+
+	    try {
+	        // Add your data
+	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(10);
+	        for (cTurn i : turns) {
+	        	nameValuePairs.add(new BasicNameValuePair(i.getDir(), i.getDur()));
+	        }
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+	        // Execute HTTP Post Request
+	        HttpResponse response = httpclient.execute(httppost);
+	        
+	    } catch (ClientProtocolException e) {
+	        // TODO Auto-generated catch block
+	    } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	    }
+	} 
 	
 	private float getDist(dPoint p1, dPoint p2) {
 		return (float) Math.sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
@@ -101,19 +173,36 @@ public class DrawingView extends View {
 			
 			float angle = (float) ((float) ((Math.PI - Math.acos((a*a + b*b - c*c) / (2 * a * b)))) * 180 / Math.PI);
 			if (p3.x < p2.x) angle *= -1;
-			Log.i("p1 + p2 + p3", p1.toString() + ' ' + p2.toString() + ' ' + p3.toString());
-			Log.i("Angle", Float.toString(angle));
+			
+			// add to cTurns ArrayList
+			int dir;
+			int dur;
+			if (angle > 0) {
+				dur = (int) (angle / 90 * 27);
+				if (dur == 0) dir = 147;
+				else dir = 200;
+			} else {
+				dur = (int) (angle / 90 * 33) * -1;
+				if (dur == 0) dir = 147;
+				else dir = 100;
+			}
+			
+			Log.i("direction", "" + dir);
+			Log.i("duration", Integer.toString(dur));
+			
+			turns.add(new cTurn(dir, dur));
+			turns.add(new cTurn(147, WINDOW_SIZE-dur));
+			
+//			Log.i("p1 + p2 + p3", p1.toString() + ' ' + p2.toString() + ' ' + p3.toString());
+//			Log.i("Angle", Float.toString(angle));
 			
 		}
-//		for (dPoint p : points) {
-//			Log.i("points", p.toString());
-//		}
 	}
 	
 	private void setupDrawing(){
 		//get drawing area setup for interaction 
 		
-		brushSize = getResources().getInteger(R.integer.medium_size);
+		brushSize = getResources().getInteger(R.integer.large_size);
 		lastBrushSize = brushSize;
 		drawPath = new Path();
 		drawPaint = new Paint();
@@ -164,6 +253,7 @@ public class DrawingView extends View {
 		
 		if (touchCount == 0) {
 			points = new ArrayList<dPoint>();
+			turns = new ArrayList<cTurn>();
 			drawCanvas.drawPoint(touchX - 10, touchY - 10, tempPaint);
 			pathL = 0; 
 			points.add(new dPoint(touchX, touchY));
