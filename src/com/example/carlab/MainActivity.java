@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +24,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	
 	private DrawingView drawView;
 	private ImageButton currPaint, drawBtn, eraseBtn, newBtn;
-	private Button goBtn;
+	private Button goBtn, stopBtn;
 	private float smallBrush, mediumBrush, largeBrush;
 
     @Override
@@ -52,6 +53,9 @@ public class MainActivity extends Activity implements OnClickListener{
         
         goBtn = (Button)findViewById(R.id.go_btn);
         goBtn.setOnClickListener(this);
+        
+        stopBtn = (Button)findViewById(R.id.stop_btn);
+        stopBtn.setOnClickListener(this);
     }
 
 
@@ -155,25 +159,31 @@ public class MainActivity extends Activity implements OnClickListener{
     	}
     	
     	else if(view.getId()==R.id.new_btn){
-    	    //new button
-    		AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
-    		newDialog.setTitle("New drawing");
-    		newDialog.setMessage("Start new drawing (you will lose the current drawing)?");
-    		newDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-    		    public void onClick(DialogInterface dialog, int which){
-    		        drawView.startNew();
-    		        dialog.dismiss();
-    		    }
-    		});
-    		newDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-    		    public void onClick(DialogInterface dialog, int which){
-    		        dialog.cancel();
-    		    }
-    		});
-    		newDialog.show();
+//    		Log.i("in start view area", "in start view area");
+	        drawView.startNew();
+//    	    //new button
+//    		AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+//    		newDialog.setTitle("New drawing");
+//    		newDialog.setMessage("Start new drawing (you will lose the current drawing)?");
+//    		newDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+//    		    public void onClick(DialogInterface dialog, int which){
+//    		    	
+//    		        dialog.dismiss();
+//    		    }
+//    		});
+//    		newDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+//    		    public void onClick(DialogInterface dialog, int which){
+//    		        dialog.cancel();
+//    		    }
+//    		});
+//    		newDialog.show();
     	}
     	else if(view.getId()==R.id.go_btn) {
     		drawView.goNew();
+    	}
+    	
+    	else if(view.getId()==R.id.stop_btn) {
+    		drawView.goStop();
     	}
     }
     

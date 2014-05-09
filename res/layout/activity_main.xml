@@ -47,6 +47,13 @@
             android:layout_height="fill_parent"
             android:text="@string/go"
             android:contentDescription="@string/go" />
+          
+          <Button
+           	android:id="@+id/stop_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:text="@string/stop"
+            android:contentDescription="@string/stop" />
     
     </LinearLayout>
 
